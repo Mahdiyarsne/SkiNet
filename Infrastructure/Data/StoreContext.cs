@@ -14,10 +14,5 @@ namespace Infrastructure.Data
 
 			modelBuilder.ApplyConfigurationsFromAssembly(typeof(ProductConfiguration).Assembly);
 		}
-
-		internal async Task<bool> SavingChangesAsync()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
