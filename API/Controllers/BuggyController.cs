@@ -13,28 +13,28 @@ namespace API.Controllers
 		return Unauthorized();	
 		}
 
-		[HttpGet("badrequest")]
+		[HttpGet("bad-request")]
 
 		public IActionResult GetBadRequest()
 		{
 			return BadRequest("Not a good request");
 		}
 
-		[HttpGet("notfound")]
+		[HttpGet("not-found")]
 
 		public IActionResult GetNotFound()
 		{
 			return NotFound();
 		}
 
-		[HttpGet("internalerror")]
+		[HttpGet("internal-error")]
 
 		public IActionResult GetInternalError()
 		{
 			throw new Exception("This is a test exception");
 		}
 
-		[HttpPost("validationerror")]
+		[HttpPost("validation-error")]
 
 		public IActionResult GetValidationError(CreateProductDto product)
 		{
