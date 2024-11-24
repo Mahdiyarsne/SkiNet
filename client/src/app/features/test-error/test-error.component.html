@@ -7,3 +7,13 @@
   <button mat-flat-button (click)="get400Error()">Error400</button>
   <button mat-flat-button (click)="get401Error()">Error401</button>
 </div>
+
+@if (validationError) {
+  <div class="mx-auto max-w-lg mt-5 bg-red-100">
+    <ul class="space-y-2 p-2">
+      @for (error of validationError; track $index) {
+        <li class="text-red-800">{{error}}</li>
+      }
+    </ul>
+  </div>
+}
