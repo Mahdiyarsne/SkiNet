@@ -45,7 +45,7 @@
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-5 gap-4">
+    <div class="grid grid-cols-5 gap-4 mb-3">
       @for (product of products.data; track product.id) {
       <app-product-item [product]="product"></app-product-item>
       }
