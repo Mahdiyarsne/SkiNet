@@ -72,6 +72,7 @@ export class StripeService {
 
         const options: StripeAddressElementOptions = {
           mode: 'shipping',
+          defaultValues
         };
         this.addressElement = elements.create("address",options);
       }else{
@@ -87,7 +88,7 @@ export class StripeService {
 
     return this.http.post<Cart>(this.baseUrl + 'payments/' + cart.id, {}).pipe(
       map((cart) => {
-        this.cartService.cart.set(cart);
+        this.cartService.setCart(cart);
         return cart;
       })
     );
