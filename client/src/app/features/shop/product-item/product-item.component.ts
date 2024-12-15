@@ -12,19 +12,19 @@ import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 
 @Component({
-  selector: 'app-product-item',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardContent,
-    CurrencyPipe,
-    MatCardActions,
-    MatButton,
-    MatIcon,
-    RouterLink
-  ],
-  templateUrl: './product-item.component.html',
-  styleUrl: './product-item.component.scss',
+    selector: 'app-product-item',
+    standalone:true,
+    imports: [
+        MatCard,
+        MatCardContent,
+        CurrencyPipe,
+        MatCardActions,
+        MatButton,
+        MatIcon,
+        RouterLink
+    ],
+    templateUrl: './product-item.component.html',
+    styleUrl: './product-item.component.scss'
 })
 export class ProductItemComponent {
   @Input() product?: Product;

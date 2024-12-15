@@ -11,22 +11,22 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    MatIcon,
-    MatButton,
-    MatBadge,
-    RouterLink,
-    RouterLinkActive,
-    MatProgressBar,
-    MatMenuTrigger,
-    MatMenu,
-    MatDivider,
-    MatMenuItem
-  ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    standalone:true,
+    imports: [
+        MatIcon,
+        MatButton,
+        MatBadge,
+        RouterLink,
+        RouterLinkActive,
+        MatProgressBar,
+        MatMenuTrigger,
+        MatMenu,
+        MatDivider,
+        MatMenuItem
+    ],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   busyService = inject(BusyService);

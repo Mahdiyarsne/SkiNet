@@ -9,18 +9,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatCard,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatButton,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    standalone:true,
+    imports: [
+        ReactiveFormsModule,
+        MatCard,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatButton,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);

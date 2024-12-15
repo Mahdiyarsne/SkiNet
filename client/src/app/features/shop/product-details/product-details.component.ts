@@ -12,20 +12,20 @@ import { CartService } from '../../../core/services/cart.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-product-details',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    MatButton,
-    MatIcon,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatDivider,
-    FormsModule,
-  ],
-  templateUrl: './product-details.component.html',
-  styleUrl: './product-details.component.scss',
+    selector: 'app-product-details',
+    standalone:true,
+    imports: [
+        CurrencyPipe,
+        MatButton,
+        MatIcon,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        MatDivider,
+        FormsModule,
+    ],
+    templateUrl: './product-details.component.html',
+    styleUrl: './product-details.component.scss'
 })
 export class ProductDetailsComponent implements OnInit {
   private shopService = inject(ShopService);

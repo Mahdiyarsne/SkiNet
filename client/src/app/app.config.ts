@@ -1,8 +1,4 @@
-import {
-  APP_INITIALIZER,
-  ApplicationConfig,
-  provideZoneChangeDetection,
-} from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, inject, provideAppInitializer } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -32,11 +28,9 @@ export const appConfig: ApplicationConfig = {
        loadingInterceptor,
        authInterceptor
       ])),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      multi: true,
-      deps: [InitService],
-    },
+    provideAppInitializer(() => {
+        const initializerFn = (initializeApp)(inject(InitService));
+        return initializerFn();
+      }),
   ],
 };

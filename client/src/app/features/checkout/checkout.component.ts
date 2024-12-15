@@ -1,10 +1,16 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { OrderSummaryComponent } from '../../shared/components/order-summary/order-summary.component';
-import { MatStepperModule } from '@angular/material/stepper';
-import { RouterLink } from '@angular/router';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { StripeService } from '../../core/services/stripe.service';
-import { StripeAddressElement } from '@stripe/stripe-js';
+import {
+  ConfirmationToken,
+  StripeAddressElement,
+  StripeAddressElementChangeEvent,
+  StripePaymentElement,
+  StripePaymentElementChangeEvent,
+} from '@stripe/stripe-js';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import {
   MatCheckboxChange,
@@ -14,7 +20,10 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Address } from '../../shared/models/user';
 import { firstValueFrom } from 'rxjs';
 import { AccountService } from '../../core/services/account.service';
-import { CheckoutDeliveryComponent } from "./checkout-delivery/checkout-delivery.component";
+import { CheckoutDeliveryComponent } from './checkout-delivery/checkout-delivery.component';
+import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';
+import { CartService } from '../../core/services/cart.service';
+import { CurrencyPipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
@@ -25,22 +34,75 @@ import { CheckoutDeliveryComponent } from "./checkout-delivery/checkout-delivery
     RouterLink,
     MatButton,
     MatCheckboxModule,
-    CheckoutDeliveryComponent
-],
+    CheckoutDeliveryComponent,
+    CheckoutReviewComponent,
+    CurrencyPipe,
+  ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
   private stripeService = inject(StripeService);
+  private router = inject(Router);
   private accountService = inject(AccountService);
   private snackbar = inject(SnackbarService);
+  cartService = inject(CartService);
   addressElement?: StripeAddressElement;
+  paymentElement?: StripePaymentElement;
   saveAddress = false;
+  completionStatus = signal<{
+    address: boolean;
+    card: boolean;
+    delivery: boolean;
+  }>({ address: false, card: false, delivery: false });
+  conformationToken?: ConfirmationToken;
 
   async ngOnInit() {
     try {
       this.addressElement = await this.stripeService.createAddressElement();
       this.addressElement.mount('#address-element');
+      this.addressElement.on('change', this.handleAddressChange);
+
+      this.paymentElement = await this.stripeService.createPaymentElement();
+      this.paymentElement.mount('#payment-element');
+      this.paymentElement.on('change', this.handlePaymentChange);
+    } catch (error: any) {
+      this.snackbar.error(error.message);
+    }
+  }
+  handleAddressChange = (event: StripeAddressElementChangeEvent) => {
+    this.completionStatus.update((state) => {
+      state.address = event.complete;
+      return state;
+    });
+  };
+
+  handlePaymentChange = (event: StripePaymentElementChangeEvent) => {
+    this.completionStatus.update((state) => {
+      state.card = event.complete;
+      return state;
+    });
+  };
+
+  handleDeliveryChange(event: boolean) {
+    this.completionStatus.update((state) => {
+      state.delivery = event;
+      return state;
+    });
+  }
+
+  async getConformationToken() {
+    try {
+      if (
+        Object.values(this.completionStatus()).every(
+          (status) => status === true
+        )
+      ) {
+        const result = await this.stripeService.createConformationToken();
+        if (result.error) throw new Error(result.error.message);
+        this.conformationToken = result.confirmationToken;
+        console.log(this.conformationToken);
+      }
     } catch (error: any) {
       this.snackbar.error(error.message);
     }
@@ -53,10 +115,35 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         address && firstValueFrom(this.accountService.updateAddress(address));
       }
     }
-    if(event.selectedIndex == 2){
+    if (event.selectedIndex == 2) {
       await firstValueFrom(this.stripeService.createOrUpdatePaymentInstant());
     }
+
+    if (event.selectedIndex == 3) {
+      await this.getConformationToken();
+    }
   }
+
+  async confirmPayment(stepper: MatStepper) {
+    try {
+      if (this.conformationToken) {
+        const result = await this.stripeService.confirmPayment(
+          this.conformationToken
+        );
+        if (result.error) {
+          throw new Error(result.error.message);
+        } else {
+          this.cartService.deleteCart();
+          this.cartService.selectedDelivery.set(null);
+          this.router.navigateByUrl('/checkout/success');
+        }
+      }
+    } catch (error: any) {
+      this.snackbar.error(error.message || 'Something went wrong ');
+      stepper.previous();
+    }
+  }
+
   private async getAddressFromStripeAddress(): Promise<Address | null> {
     const result = await this.addressElement?.getValue();
     const address = result?.value.address;
@@ -78,6 +165,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.stripeService.desposeElements();
+    this.stripeService.disposeElements();
   }
 }

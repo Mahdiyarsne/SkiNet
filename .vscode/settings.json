@@ -2,5 +2,8 @@
     "workbench.colorCustomizations": {
         "minimap.background": "#00000000",
         "scrollbar.shadow": "#52525200"
-    }
+    },
+    "cSpell.words": [
+        "paymentcard"
+    ]
 }
