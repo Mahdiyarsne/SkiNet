@@ -4,6 +4,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { StripeService } from '../../core/services/stripe.service';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import {
   ConfirmationToken,
   StripeAddressElement,
@@ -23,7 +24,7 @@ import { AccountService } from '../../core/services/account.service';
 import { CheckoutDeliveryComponent } from './checkout-delivery/checkout-delivery.component';
 import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';
 import { CartService } from '../../core/services/cart.service';
-import { CurrencyPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
@@ -37,6 +38,7 @@ import { CurrencyPipe, JsonPipe } from '@angular/common';
     CheckoutDeliveryComponent,
     CheckoutReviewComponent,
     CurrencyPipe,
+    MatProgressSpinnerModule
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
@@ -56,6 +58,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     delivery: boolean;
   }>({ address: false, card: false, delivery: false });
   conformationToken?: ConfirmationToken;
+
+  loading = false;
 
   async ngOnInit() {
     try {
@@ -125,6 +129,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   async confirmPayment(stepper: MatStepper) {
+    this.loading = true;
     try {
       if (this.conformationToken) {
         const result = await this.stripeService.confirmPayment(
@@ -141,6 +146,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     } catch (error: any) {
       this.snackbar.error(error.message || 'Something went wrong ');
       stepper.previous();
+    }finally{
+      this.loading = false;
     }
   }
 
