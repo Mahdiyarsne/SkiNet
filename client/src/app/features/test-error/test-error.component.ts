@@ -4,7 +4,6 @@ import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-test-error',
-    standalone:true,
     imports: [MatButton],
     templateUrl: './test-error.component.html',
     styleUrl: './test-error.component.scss'

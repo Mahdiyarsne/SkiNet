@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-empty-state',
-    standalone:true,
     imports: [MatIcon, MatButton, RouterLink],
     templateUrl: './empty-state.component.html',
     styleUrl: './empty-state.component.scss'

@@ -10,7 +10,6 @@ import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'app-text-input',
-    standalone:true,
     imports: [ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatError],
     templateUrl: './text-input.component.html',
     styleUrl: './text-input.component.scss'

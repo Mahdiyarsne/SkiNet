@@ -7,7 +7,6 @@ import { MatButton } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-filters-dialog',
-  standalone: true,
   imports: [
     FormsModule,
     MatDivider,

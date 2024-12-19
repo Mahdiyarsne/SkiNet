@@ -3,7 +3,6 @@ import { ConfirmationToken } from '@stripe/stripe-js';
 
 @Pipe({
   name: 'address',
-  standalone: true,
 })
 export class AddressPipe implements PipeTransform {
   transform(

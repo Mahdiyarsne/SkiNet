@@ -10,7 +10,6 @@ import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-login',
-    standalone:true,
     imports: [
         ReactiveFormsModule,
         MatCard,

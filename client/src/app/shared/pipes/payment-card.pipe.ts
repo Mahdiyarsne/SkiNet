@@ -3,7 +3,6 @@ import { ConfirmationToken } from '@stripe/stripe-js';
 
 @Pipe({
   name: 'paymentCard',
-  standalone: true,
 })
 export class PaymentCardPipe implements PipeTransform {
 

@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-product-details',
-    standalone:true,
     imports: [
         CurrencyPipe,
         MatButton,

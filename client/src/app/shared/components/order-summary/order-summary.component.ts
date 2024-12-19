@@ -8,7 +8,7 @@ import { CurrencyPipe, Location } from '@angular/common';
 
 @Component({
     selector: 'app-order-summary',
-    standalone:true,
+
     imports: [
         MatButton,
         RouterLink,
