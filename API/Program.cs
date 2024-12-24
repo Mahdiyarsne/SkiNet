@@ -1,4 +1,5 @@
 using API.Middleware;
+using API.SignalR;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -9,6 +10,7 @@ using StackExchange.Redis;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(opt =>
@@ -35,6 +37,8 @@ builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<Sto
 
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,9 +46,15 @@ var app = builder.Build();
 app.UseCors(x =>
     x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200")
 );
+
+app.UseAuthentication();    
+app.UseAuthorization();
+
 app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>();
+
+app.MapHub<NotificationHub>("/hub/notifications");
 
 try
 {

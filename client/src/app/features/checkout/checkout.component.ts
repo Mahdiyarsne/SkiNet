@@ -30,7 +30,6 @@ import { OrderService } from '../../core/services/order.service';
 
 @Component({
   selector: 'app-checkout',
-  standalone: true,
   imports: [
     OrderSummaryComponent,
     MatStepperModule,
@@ -143,6 +142,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               const order = await this.createOrderModel();
               const orderResult = await firstValueFrom(this.orderService.createOrder(order));
               if(orderResult){
+                this.orderService.orderComplete = true;
                 this.cartService.deleteCart();
                 this.cartService.selectedDelivery.set(null);
                 this.router.navigateByUrl('/checkout/success');

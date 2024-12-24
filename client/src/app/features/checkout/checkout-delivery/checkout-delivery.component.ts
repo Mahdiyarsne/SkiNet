@@ -7,7 +7,6 @@ import { DeliveryMethod } from '../../../shared/models/deliveryMethods';
 
 @Component({
     selector: 'app-checkout-delivery',
-    standalone:true,
     imports: [MatRadioModule, CurrencyPipe],
     templateUrl: './checkout-delivery.component.html',
     styleUrl: './checkout-delivery.component.scss'

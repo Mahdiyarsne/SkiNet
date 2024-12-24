@@ -3,16 +3,20 @@
 
   <dl>
     <dt class="font-medium">Shipping address</dt>
-    <dd class="mt-1 text-gray-500">{{conformationToken?.shipping | address}}</dd>
+    <dd class="mt-1 text-gray-500">
+      {{ conformationToken?.shipping | address }}
+    </dd>
     <dt class="font-medium">Payment details</dt>
-    <dd class="mt-1 text-gray-500">{{conformationToken?.payment_method_preview | paymentCard}}</dd>
+    <dd class="mt-1 text-gray-500">
+      {{ conformationToken?.payment_method_preview | paymentCard }}
+    </dd>
   </dl>
 </div>
 
 <div class="mt-6 mx-auto">
   <div class="border-b border-gray-200">
-    <table class="w-full text-center">
-      <tbody class="divide-y divide-gray-200">
+    <table table class="w-full text-center">
+      <tbody class="divide-y ledivide-gray-200">
         @for (item of cartService.cart()?.items; track item.productId) {
         <tr>
           <td class="py-4">
@@ -26,7 +30,7 @@
             </div>
           </td>
           <td class="p-4">{{ item.quantity }}</td>
-          <td class="p-4 text-right">{{ item.price | currency}}</td>
+          <td class="p-4 text-right">{{ item.price | currency }}</td>
         </tr>
         }
       </tbody>
