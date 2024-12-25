@@ -1,7 +1,9 @@
 ﻿
+using Core.Interfaces;
+
 namespace Core.Entities.OrderAggregate
 {
-	public class Order : BaseEntity
+	public class Order : BaseEntity,IDtoConvertiable
 	{
 		public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 

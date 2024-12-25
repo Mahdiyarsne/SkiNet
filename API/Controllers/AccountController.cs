@@ -1,4 +1,5 @@
-﻿using API.DTOs;
+﻿using System.Security.Claims;
+using API.DTOs;
 using API.Extensions;
 using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -56,7 +57,9 @@ namespace API.Controllers
 				user.FirstName,
 				user.LastName,
 				user.Email,
-				Address = user.Address?.ToDto()
+				Address = user.Address?.ToDto(),
+				Roles = User.FindFirstValue(ClaimTypes.Role)
+
 
 			});
 		}
