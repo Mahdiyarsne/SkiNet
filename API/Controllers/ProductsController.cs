@@ -1,3 +1,4 @@
+using API.RquestHelpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -9,7 +10,7 @@ namespace API.Controllers;
 
 public class ProductsController(IUnitOfWork unit) : BaseApiController
 {
-
+	
 	[HttpGet]
 	public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts(
 	[FromQuery] ProductSpecParams specParams)
@@ -65,7 +66,6 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
 	[Authorize(Roles = "Admin")]
 	[HttpDelete("{id:int}")]
-
 	public async Task<ActionResult> DeleteProduct(int id)
 	{
 		var product = await unit.Repository<Product>().GetByIdAsync(id);
@@ -82,6 +82,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 		return BadRequest("Problem deleting the problem");
 	}
 
+
 	[HttpGet("brands")]
 	public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
 	{
@@ -92,6 +93,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 		return Ok(await unit.Repository<Product>().ListAsync(spec));
 	}
 
+	
 	[HttpGet("types")]
 	public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
 	{
